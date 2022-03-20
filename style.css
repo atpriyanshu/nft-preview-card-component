@@ -3,6 +3,7 @@
 :root {
   --color-primary-soft-blue: hsl(215, 51%, 70%);
   --color-primary-cyan: hsl(178, 100%, 50%);
+  --clr-primary-cyan: 178 100% 50%;
 
   --color-neutral-blue-main: hsl(217, 54%, 11%); /* Main bg */
   --color-neutral-blue-card: hsl(216, 50%, 16%); /* Card bg */
@@ -66,7 +67,9 @@ a:not([class]) {
 img,
 picture {
   max-width: 100%;
-  /* display: block; */
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -111,16 +114,39 @@ body {
   background-color: var(--color-neutral-blue-card);
 }
 
-.card_image {
-  display: block;
+.card_image-container {
+  position: relative;
   border-radius: 7px;
   margin-bottom: 1em;
-  /* padding: 10px; */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card_image {
+  display: block;
+}
+
+.card_image-container::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  background-color: hsl(var(--clr-primary-cyan) / 0.6);
+  background-image: url("images/icon-view.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 65ms;
+}
+
+.card_image-container:is(:hover, :active, :focus)::before {
+  opacity: 1;
 }
 
 .card_title {
   margin-bottom: 0.7rem;
   color: var(--color-neutral-white);
+  transition: color 70ms;
 }
 
 .card_text {
@@ -173,6 +199,12 @@ body {
 
 .user_name {
   color: var(--color-neutral-white);
+  transition: color 70ms;
+}
+
+:is(.card_title, .user_name):is(:hover, :active, :focus) {
+  cursor: pointer;
+  color: var(--color-primary-cyan);
 }
 
 .flex {
